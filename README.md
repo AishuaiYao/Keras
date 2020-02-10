@@ -1,6 +1,5 @@
 # KerasPracticeProject
-keras的练习工程
-环境说明
+##环境说明  
 keras2.0
 后端tensorflow-gpu版1.6
 Python3.5
