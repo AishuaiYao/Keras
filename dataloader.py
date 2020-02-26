@@ -3,6 +3,8 @@ import numpy as np
 import random
 import keras
 import os
+import pandas as pd
+
 
 class Dataloader():
     def __init__(self,path,n_classes = None):
@@ -12,12 +14,6 @@ class Dataloader():
 
 
     def load_data(self,name):
-        """
-        负责将数据一张一张读入并根据文件名（例23_D）生成标签，23只是数据的序号，根据
-        最后的字母D打标签
-        :param name:数据的路径
-        :return:图像数据和标签
-        """
         im = cv2.imread(name)
         im = cv2.resize(im,(224,224))
         label = name.split('_')[-1][0]
@@ -37,13 +33,6 @@ class Dataloader():
 
 
     def load_predict_data(self,name,isgray= False,input_size=(28,28)):
-        """
-        测试模型的时候使用，一次测一张
-        :param name: 文件名和路径
-        :param isgray:如果像mnist一类，输入数据是灰度图赋值true
-        :param input_size:传入图像的长宽
-        :return: 格式如（1,28,28,1）的数据
-        """
         im = cv2.imread(name)
         im = cv2.resize(im,input_size)
         if isgray:
@@ -86,15 +75,10 @@ class Dataloader():
                 os.rename(self.path+'/'+file,self.path+'/'+str(cnt)+'_E.jpg')
             cnt+=1
 
+
 class DataGenerator(Dataloader):
-    """
-    继承自Dataloader的迭代器类，如果训练的数据量比较大，就不能在将数据一次性全部读入内存。
-    keras这个时候就需要使用python的生成器来分批次训练数据。此类只有train_generator的是迭代
-    器，因为训练数据最多。valid_generator只返回数据和标签的元组
-    """
     def __init__(self,path,n_classes):
         Dataloader.__init__(self,path,n_classes)
-
 
     def train_generator(self,batch_size):
         X = []
@@ -123,6 +107,8 @@ class DataGenerator(Dataloader):
         X = np.array(X)
         Y = np.squeeze(np.array(Y))
         return (X,Y)
+
+
 
 
 

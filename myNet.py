@@ -20,11 +20,6 @@ class Nets():
         return model
 
     def CNN(self):
-        """
-        随意搭建的普通CNN，mnist直接使用时过拟合现象严重，加入了Dropout和l2正则缓解。
-        另外使用SGD时经常出现更新停滞，可能是陷入了局部极小值，Adam比较稳定，每次都能更新
-        :return: model
-        """
         model = Sequential()
         model.add(Conv2D(16,(3,3),activation='relu',input_shape = self.shape))
         model.add(Conv2D(32,(3,3),activation='relu'))
@@ -47,11 +42,6 @@ class Nets():
 
 
     def VGG(self):
-        """
-        由于使用自己的笔记本显卡1050-4G显存实验，所以只能跑得动VGG11，层数再多就OOM了。实验中由于网络过深出现了梯度
-        消失，导致损失不在下降，所以每层后面加入了BN操作后解决。
-        :return: VGG11模型
-        """
         model = Sequential()
         model.add(Conv2D(64, (3, 3),input_shape=self.shape))
         model.add(BatchNormalization(axis=3))
@@ -161,10 +151,6 @@ class Nets():
 
 
     def ResNet18(self):
-        """
-        还是太深的话，笔记本带不动，ResNet18还可以，该模型比较稳定，参数量小，没有梯度消失现象
-        :return:ResNet18模型
-        """
         input = Input(self.shape)
 
         x = ZeroPadding2D((3,3))(input)
@@ -197,10 +183,6 @@ class Nets():
         return model
 
     def ResNet50(self):
-        """
-        注释了好多后笔记本才带的动
-        :return: ResNet50模型
-        """
         input = Input(self.shape)
 
         x = ZeroPadding2D((3,3))(input)

@@ -1,13 +1,12 @@
 import keras
 import cv2
+import tools
+import argparse
 from keras.datasets import mnist
 from myNet import Nets
 from dataloader import Dataloader
 
-learning_rate = 0.001
-training_iters = 20
-batch_size = 128
-display_step = 10
+
 
 H, W, C = 28, 28, 1
 input_size = H*W
@@ -16,7 +15,13 @@ n_classes = 10
 
 nets = Nets(n_classes,shape)
 model = nets.CNN()
+
 datasets = Dataloader('./test/mnisttest')
+
+parse = argparse.ArgumentParser('mnist recognition demo,using CNN')
+parse.add_argument('-b','--batch_size',default = 128,type = int,help = 'set batch_size')
+parse.add_argument('-e','--epoch',default = 10,type=int,help='the numbers of epoch')
+args = parse.parse_args()
 
 def train():
     (x_train, y_train), (x_test, y_test) = mnist.load_data()
@@ -28,9 +33,10 @@ def train():
     y_test = keras.utils.to_categorical(y_test, n_classes)
 
     model.summary()
-    model.fit(x_train,y_train,validation_data=(x_test,y_test),epochs=20,batch_size = batch_size)
+    history = model.fit(x_train,y_train,validation_data=(x_test,y_test),epochs=args.epoch,batch_size = args.batch_size)
+    tools.show_plot(history,'./figure')
     # model.save('./model/mnistCNN.h5')
-    scores = model.evaluate(x_test,y_test,batch_size=batch_size)
+    scores = model.evaluate(x_test,y_test,batch_size=args.batch_size)
     print(scores)
 
 

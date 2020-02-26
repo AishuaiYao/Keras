@@ -9,19 +9,19 @@ shape = (H,W,C)
 n_classes = 5
 batch_size = 16
 epochs = 10
-save_model = './model/aslResNet18.h5'
+save_model = './model/aslCNN.h5'
 
 train_data = DataGenerator('./train',n_classes)
 valid_data = DataGenerator('./valid',n_classes).valid_generator()
 
 nets = Nets(n_classes,shape)
-model = nets.VGG()
+model = nets.CNN()
+
 
 def train():
     model.summary()
-    #fit_generator需要使用迭代器
     model.fit_generator(train_data.train_generator(batch_size),epochs=epochs,validation_data= valid_data,steps_per_epoch=len(train_data.files)//batch_size)
-    # model.save_weights(save_model)
+    model.save_weights(save_model)
 
 def test(path):
     model.load_weights(save_model)
@@ -37,9 +37,9 @@ def test(path):
 
 
 if __name__ =='__main__':
-    train()
+    # train()
     data_path= './test/asltest'
-    # test(data_path)
+    test(data_path)
 
 
 
