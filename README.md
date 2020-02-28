@@ -2,8 +2,9 @@
 ## 环境说明  
 * keras2.0
 * 后端tensorflow-gpu版1.6
-* Python3.5
-* ubuntu16.4
+* python3.5
+* ubuntu16.04
+* pycharm2018
 ## 搭建网络
 * MLP
 * 随意搭建的浅层CNN
